@@ -1,0 +1,20 @@
+{
+  "name": "tp08-dai",
+  "version": "1.0.0",
+  "description": "App Node que se relaciona con una base de datos para hacer requests GET, POST, PUT y DELETE",
+  "homepage": "https://github.com/AgusAiello7/TP08-DAI#readme",
+  "bugs": {
+    "url": "https://github.com/AgusAiello7/TP08-DAI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgusAiello7/TP08-DAI.git"
+  },
+  "license": "ISC",
+  "author": "Agustin Aiello y Pedro Malowicki los programadores",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  }
+}
