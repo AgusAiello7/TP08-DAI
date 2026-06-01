@@ -1,4 +1,11 @@
-import {router} from 'express'; 
-import ProvinceService from './../services/province-service.js'
+import {Router} from 'express'; 
+import ProvinceServ
 const router = Router();
-const svc = new ProvinceService();
+
+router.get('', async (req, res) => {
+})
+
+router.get('id', async (req, res) => {
+    res.send("Hola")
+})
+export default router

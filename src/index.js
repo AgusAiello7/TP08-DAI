@@ -11,5 +11,5 @@ app.use(express.json())
 app.use("/api/province", ProvinceRouter)
 
 app.listen(port, () => {
-    console.log(`App funcionando en ${port}`)
+    console.log(`App funcionando en https:/localhost:${port}`)
 })
