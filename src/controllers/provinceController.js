@@ -4,36 +4,40 @@ const router = Router();
 const svc = new ProvinceService();
 
 router.get('', async (req, res) => {
-    try{
-        const respuesta = await svc.getAllProvinces();
-        if(respuesta){
-            res.status(200).json(respuesta)
-        } else {
-            res.status(404).send("Ninguna provincia encontrada")
-        }
-    }
-    catch(error){
-        console.error(error)
-        res.status(500).send("Error del servidor")
-    }
-
-})
-
-router.get(':id', async (req, res) => {
-    const provinceID = req.params.id
-    const respuesta = svc.getProvinceByID(provinceID)
+    const respuesta = await svc.getAllAsync();
     if(respuesta){
         res.status(200).json(respuesta)
     } else {
-        res.status(500).send("Error interno")
-    }
+        console.error(error)
+        res.status(500).send("Error del servidor")
+    }    
+})
+
+router.get(':id', async (req, res) => {
+    const respuesta = await svc.getByIdAsync(req.params.id);
+    if(respuesta){
+        res.status(200).json(respuesta)
+    } else {
+        console.error(error)
+        res.status(500).send("Error del servidor")
+    }    
 })
 
 router.post('', async (req, res) => {
-    try{
-        const datosProvincia = req.body
-        const respuesta = svc.createProvince(datosProvincia)
-        if(respuesta){
+    const respuesta = await svc.createAsync();
+    if(respuesta){
+        res.status(200).json(respuesta)
+    } else {
+        console.error(error)
+        res.status(500).send("Error del servidor")
+    }    
+})
+
+router.put('', async (req, res) => {
+try{
+    const datosProvincia = req.body
+    const respuesta = svc.updateAsync(datosProvincia)
+     if(respuesta){
             res.status(201).json(respuesta)
         } else {
             res.status(500).send("Error interno")
@@ -41,6 +45,17 @@ router.post('', async (req, res) => {
     }
     catch(error){
         res.status(400).send("Error en la request")
+    }
+
+})
+
+router.delete('/:id', async (req, res) => {
+const provinceID = req.params.id
+    const respuesta = svc.deleteByIdAsync(provinceID)
+    if(respuesta){
+        res.status(200).json(respuesta)
+    } else {
+        res.status(500).send("Error interno")
     }
 })
 

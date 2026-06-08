@@ -2,12 +2,20 @@ import ProvinceRepository from '../repositories/province-repository.js'
 
 export default class ProvinceService {
 
-    getAllProvinces = async () => {
+    getAllAsync = async () => {
         const repo = new ProvinceRepository()
-        const respuesta = repo.getAllAsync();
+        const returnArray = await repo.getAllAsync()
+        return returnArray
     }
 
-    getProvinceByID = async () => {
-        return "Llego al servicio de getProvinceByID"
+    getByIdAsync = async () => {
+        const repo = new ProvinceRepository()
+        const returnArray = await repo.getByIdAsync()
+        return returnArray
+    }
+
+    createAsync = async () => {
+        const repo = new ProvinceRepository()
+        const returnArray = await repo.createAsync()
     }
 }
