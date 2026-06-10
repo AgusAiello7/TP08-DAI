@@ -35,8 +35,8 @@ router.post('', async (req, res) => {
 
 router.put('', async (req, res) => {
 try{
-    const datosProvincia = req.body
-    const respuesta = svc.updateAsync(datosProvincia)
+    const provinciaIngresada = req.body
+    const respuesta = svc.updateAsync(provinciaIngresada)
      if(respuesta){
             res.status(201).json(respuesta)
         } else {

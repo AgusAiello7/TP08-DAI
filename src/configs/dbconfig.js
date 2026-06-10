@@ -1,9 +1,11 @@
+import 'dotenv/config'
+
 const config = {
-    host: "localhost",
-    database: "dai-events",
-    user: "postgres",
-    password: "root",
-    port: 4000
+    host: process.env.HOST,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.PORT,
 }
 
 export default config;
