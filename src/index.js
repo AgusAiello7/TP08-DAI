@@ -11,7 +11,7 @@ app.use(express.json())
 app.use("/api/provinces/", ProvinceRouter)
 
 app.get("/", (req, res) => {
-    res.send("Hola")
+    res.send("API funcionando")
 })
 
 app.listen(port, () => {

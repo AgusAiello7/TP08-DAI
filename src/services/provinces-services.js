@@ -8,15 +8,21 @@ export default class ProvinceService {
         return returnArray
     }
 
-    getByIdAsync = async () => {
+    getByIdAsync = async (id) => {
         const repo = new ProvinceRepository()
-        const returnArray = await repo.getByIdAsync()
+        const returnArray = await repo.getByIdAsync(id)
         return returnArray
     }
 
-    createAsync = async () => {
+    createAsync = async (provincia) => {
         const repo = new ProvinceRepository()
-        const returnArray = await repo.createAsync()
+        const returnArray = await repo.createAsync(provincia)
+        return returnArray
+    }
+
+    updateAsync = async (provincia) => {
+        const repo = new ProvinceRepository()
+        const returnArray = await repo.updateAsync()
         return returnArray
     }
 
