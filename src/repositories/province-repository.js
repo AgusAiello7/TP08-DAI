@@ -28,7 +28,7 @@ export default class ProvinceRepository{
         const sql = `SELECT * FROM provinces WHERE id = ${id}`
         const result = await client.query(sql)
         await client.end()
-        returnArray = result.rows
+        returnArray = result.rows[0]
         return returnArray;
     }
 
@@ -53,6 +53,12 @@ export default class ProvinceRepository{
         return returnArray
     }
     deleteByIdAsync = async (id) => {
+        let returnArray = null
+        const client = new Client(config)
+        await client.connect;
+        const querySQL = (`DELETE FROM provinces WHERE id = ${id} RETURNING *`)
+        returnArray = client.query(querySQL)
+        return returnArray 
     }
 
 }

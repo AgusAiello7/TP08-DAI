@@ -22,14 +22,13 @@ export default class ProvinceService {
 
     updateAsync = async (provincia) => {
         const repo = new ProvinceRepository()
-        const returnArray = await repo.updateAsync()
+        const returnArray = await repo.updateAsync(provincia)
         return returnArray
     }
 
-    deleteByIdAsync = async () => {
+    deleteByIdAsync = async (id) => {
         const repo = new ProvinceRepository()
-        const returnArray = await repo.deleteByIdAsync()
+        const returnArray = await repo.deleteByIdAsync(id)
         return returnArray
     }
-
-}
+    }

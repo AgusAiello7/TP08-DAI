@@ -4,28 +4,27 @@ const router = Router();
 const svc = new ProvinceService();
 
 router.get('', async (req, res) => {
-    const respuesta = await svc.getAllAsync();
-    if(respuesta){
-        res.status(200).json(respuesta)
-    } else {
-        console.error(error)
-        res.status(500).send("Error del servidor")
-    }    
-})
+    try {
+        const respuesta = await svc.getAllAsync();
+        res.status(200).json(respuesta);
+    } catch (error) {
+        res.status(500).send("Error interno del servidor: " + error.message);
+    }
+});
 
 router.get('/:id', async (req, res) => {
-    try{
+    try {
         const respuesta = await svc.getByIdAsync(req.params.id);
-        if(respuesta){
-            res.status(200).json(respuesta)
+
+        if (respuesta) {
+            res.status(200).json(respuesta);
         } else {
-            console.error(error)
-            res.status(404).send("No se encontró la provincia")
-        }    
+            res.status(404).send("No se encontró la provincia");
+        }
     } catch (error) {
-        res.status(500).send("Error interno de servidor; " + error)
+        res.status(500).send("Error interno del servidor: " + error.message);
     }
-})
+}); 
 
 router.post('', async (req, res) => {
     try{
@@ -65,5 +64,6 @@ const provinceID = req.params.id
         res.status(500).send("Error interno")
     }
 })
+
 
 export default router
