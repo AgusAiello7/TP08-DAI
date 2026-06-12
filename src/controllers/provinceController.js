@@ -1,70 +1,114 @@
-import {Router} from 'express'; 
-import ProvinceService from '../services/provinces-services.js'
+import { Router } from 'express';
+import ProvinceService from '../services/provinces-services.js';
+import LogHelper from '../helpers/log-helper.js';
+
 const router = Router();
 const svc = new ProvinceService();
 
-router.get('', async (req, res) => {
+    router.get('', async (req, res) => {
+
     try {
         const respuesta = await svc.getAllAsync();
         res.status(200).json(respuesta);
     } catch (error) {
-        res.status(500).send("Error interno del servidor: " + error.message);
+        LogHelper.logError(error);
+        res.status(500).send("Error interno del servidor");
     }
-});
+    });
 
-router.get('/:id', async (req, res) => {
+    router.get('/:id', async (req, res) => {
+
     try {
         const respuesta = await svc.getByIdAsync(req.params.id);
-
         if (respuesta) {
             res.status(200).json(respuesta);
+
         } else {
             res.status(404).send("No se encontró la provincia");
         }
+
     } catch (error) {
-        res.status(500).send("Error interno del servidor: " + error.message);
-    }
-}); 
 
-router.post('', async (req, res) => {
-    try{
-        const provinciaIngresada = req.body
-        const respuesta = await svc.createAsync(provinciaIngresada)
-        if(respuesta){
-            res.status(201).json(respuesta)
+        LogHelper.logError(error);
+        res.status(500).send("Error interno del servidor");
+    }
+    });
+
+    router.post('', async (req, res) => {
+
+    try {
+        const provinciaIngresada = req.body;
+        const respuesta = await svc.createAsync(provinciaIngresada);
+
+        if (respuesta) {
+
+            res.status(201).json(respuesta);
+
         } else {
-            res.status(400).send("Request incorrecta")
+
+            res.status(400).send("Request incorrecta");
         }
+
     } catch (error) {
-        res.status(500).send("Error interno de servidor; " + error)
-    }
-})
 
-router.put('/:id', async (req, res) => {
-try{
-    const provinciaIngresada = req.body
-    const idProvincia = req.params.id
-    const respuesta = svc.updateAsync(provinciaIngresada, idProvincia)
-     if(respuesta){33
-            res.status(201).json(respuesta)
+    if (error.statusCode === 400) {
+        return res.status(400).send(error.message);
+    }
+
+    LogHelper.logError(error);
+    res.status(500).send("Error interno del servidor");
+}
+    
+    });
+
+    router.put('', async (req, res) => {
+    try {
+
+        const provinciaIngresada = req.body;
+        const respuesta = await svc.updateAsync(
+            provinciaIngresada,
+            provinciaIngresada.id
+        );
+
+        if (respuesta) {
+            res.status(201).json(respuesta);
         } else {
-            res.status(400).send("Error en la request")
+            res.status(404).send("Provincia no encontrada");
         }
-    } catch(error){
-        res.status(500).send("Error interno del servidor; Error: " + error)
+
+    } catch (error) {
+
+        if (error.statusCode === 400) {
+            return res.status(400).send(error.message);
+        }
+
+        LogHelper.logError(error);
+        res.status(500).send("Error interno del servidor");
     }
+});
 
-})
+    router.delete('/:id', async (req, res) => {
 
-router.delete('/:id', async (req, res) => {
-const provinceID = req.params.id
-    const respuesta = svc.deleteByIdAsync(provinceID)
-    if(respuesta){
-        res.status(200).json(respuesta)
-    } else {
-        res.status(500).send("Error interno")
+    try {
+
+        const provinceID = req.params.id;
+        const respuesta = await svc.deleteByIdAsync(provinceID);
+
+        if (respuesta) {
+
+            res.status(200).json(respuesta);
+
+        } else {
+
+            res.status(404).send("Provincia no encontrada");
+        }
+
+    } catch (error) {
+
+        LogHelper.logError(error);
+
+        res.status(500).send("Error interno del servidor");
     }
-})
+    });
 
-
-export default router
+    export default router;
