@@ -50,20 +50,18 @@ const svc = new ProvinceService();
         }
 
     } catch (error) {
-
     if (error.statusCode === 400) {
         return res.status(400).send(error.message);
+    } else{ 
+        res.status(500).send("Error interno del servidor");
     }
-
-    LogHelper.logError(error);
-    res.status(500).send("Error interno del servidor");
+        LogHelper.logError(error);
 }
     
     });
 
     router.put('', async (req, res) => {
     try {
-
         const provinciaIngresada = req.body;
         const respuesta = await svc.updateAsync(
             provinciaIngresada,

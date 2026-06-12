@@ -1,19 +1,20 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import fs from 'fs';
+import path from 'path';
 
 class LogHelper {
 
     constructor() {
         this.filePath = process.env.LOG_FILE_PATH;
         this.fileName = process.env.LOG_FILE_NAME;
-        this.logToFileEnabled = process.env.LOG_TO_FILE_ENABLED.toLowerCase() === 'true';
-        this.logToConsoleEnabled = process.env.LOG_TO_CONSOLE_ENABLED.toLowerCase() === 'true';
+
+        this.logToFileEnabled =
+            process.env.LOG_TO_FILE_ENABLED?.toLowerCase() === 'true';
+
+        this.logToConsoleEnabled =
+            process.env.LOG_TO_CONSOLE_ENABLED?.toLowerCase() === 'true';
     }
 
-    /**
-     * Este método almacena en un archivo de texto y/o muestra por consola información del Error.
-     * @param {*} errorObject
-     */
     logError = (errorObject) => {
 
         const fechaHora = new Date().toISOString();
@@ -28,7 +29,14 @@ class LogHelper {
 
         if (this.logToFileEnabled) {
 
-            const fullPath = this.filePath + this.fileName;
+            if (!fs.existsSync(this.filePath)) {
+                fs.mkdirSync(this.filePath, { recursive: true });
+            }
+
+            const fullPath = path.join(
+                this.filePath,
+                this.fileName
+            );
 
             fs.appendFileSync(
                 fullPath,
@@ -36,7 +44,7 @@ class LogHelper {
                 { encoding: 'utf8' }
             );
         }
-    }
+    };
 }
 
 export default new LogHelper();
