@@ -40,11 +40,12 @@ router.post('', async (req, res) => {
     }
 })
 
-router.put('', async (req, res) => {
+router.put('/:id', async (req, res) => {
 try{
     const provinciaIngresada = req.body
-    const respuesta = svc.updateAsync(provinciaIngresada)
-     if(respuesta){
+    const idProvincia = req.params.id
+    const respuesta = svc.updateAsync(provinciaIngresada, idProvincia)
+     if(respuesta){33
             res.status(201).json(respuesta)
         } else {
             res.status(400).send("Error en la request")

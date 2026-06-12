@@ -20,9 +20,9 @@ export default class ProvinceService {
         return returnArray
     }
 
-    updateAsync = async (provincia) => {
+    updateAsync = async (provincia, id) => {
         const repo = new ProvinceRepository()
-        const returnArray = await repo.updateAsync(provincia)
+        const returnArray = await repo.updateAsync(provincia, id)
         return returnArray
     }
 

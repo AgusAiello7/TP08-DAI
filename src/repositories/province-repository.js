@@ -4,19 +4,13 @@ const { Client, Pool} = pkg;
 
 export default class ProvinceRepository{
     getAllAsync = async () => {
-        console.log(config.port)
         let returnArray = null;
         const client = new Client (config);
-        try{
-            await client.connect();
-            const sql = 'SELECT * FROM provinces';
-            const result = await client.query(sql);
-            await client.end();
-            returnArray = result.rows
-        }
-        catch(error){
-            console.log("Error en el repo" + error)
-        }
+        await client.connect();
+        const sql = 'SELECT * FROM provinces';
+        const result = await client.query(sql);
+        await client.end();
+        returnArray = result.rows
         return returnArray;
     }
 
@@ -44,14 +38,15 @@ export default class ProvinceRepository{
         return returnArray;
     }
     
-    updateAsync = async (province) => {
+    updateAsync = async (province, id) => {
         let returnArray = null
         const client = new Client(config)
         await client.connect;
-        const querySQL = (`UPDATE provinces (name, full_name, latitude, longitud, display_order) SET ('${province.name}, '${province.fullname}, ${province.latitude}. ${province.longitude}, ${province.displayorder}') WHERE id = ${province.id} RETURNING *`)
+        const querySQL = (`UPDATE provinces (name, full_name, latitude, longitud, display_order) SET ('${province.name}, '${province.fullname}, ${province.latitude}. ${province.longitude}, ${province.displayorder}') WHERE id = ${id2} RETURNING *`)
         returnArray = client.query(querySQL)
         return returnArray
     }
+
     deleteByIdAsync = async (id) => {
         let returnArray = null
         const client = new Client(config)
