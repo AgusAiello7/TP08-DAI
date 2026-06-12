@@ -50,6 +50,13 @@ export default class ProvinceService {
         throw error;
     }
 }
+
+    resetAsync = async() => {
+        const repo = new ProvinceRepository()
+        const returnArray = await repo.resetAsync()
+        return returnArray
+    }
+
 }
 
     
