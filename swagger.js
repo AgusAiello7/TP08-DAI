@@ -3,8 +3,8 @@ import { exec } from 'child_process';
 
 const doc = {
     info: {
-        title: 'API de Mascotas',
-        description: 'Documentación de la API para la gestión de mascotas',
+        title: 'API provincias',
+        description: 'Documentación de la API para la gestión de provincias',
     },  
     host: 'localhost:3000',
     schemes: ['http'],
