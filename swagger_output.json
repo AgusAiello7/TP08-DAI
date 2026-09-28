@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API de Provincias - TP08 DAI",
+    "description": "API propia (Node.js + Express + PostgreSQL) para la gestión de un catálogo de provincias: alta, baja, modificación total/parcial y consulta.",
+    "version": "1.0.0"
   },
   "host": "localhost:3000",
   "basePath": "/",
@@ -23,173 +23,321 @@
     },
     "/api/provinces/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Obtiene todas las provincias registradas.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Listado de provincias",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Province"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Crea una nueva provincia. Requiere al menos \"name\" (mínimo 3 caracteres).",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "Datos de la provincia a crear",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/ProvinceInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Provincia creada",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "400": {
+            "description": "Nombre faltante o con menos de 3 caracteres"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Reemplaza una provincia existente por completo. El id se envía dentro del body (no en la ruta).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Provincia completa, incluyendo el id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Province"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Provincia actualizada",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Nombre faltante o con menos de 3 caracteres"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Provincia no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/api/provinces/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Obtiene una provincia específica según su id.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID de la provincia"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Provincia encontrada",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "No se encontró la provincia"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "patch": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Actualiza parcialmente una provincia existente: solo modifica los campos enviados en el body.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID de la provincia"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Campos a modificar (no es necesario enviarlos todos)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProvincePartial"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Provincia actualizada",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Nombre inválido (si se envía y no cumple la validación)"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Provincia no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Elimina una provincia según su id.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "ID de la provincia"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Provincia eliminada"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Provincia no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/api/provinces/bulk": {
       "post": {
-        "description": "",
+        "tags": [
+          "Provinces"
+        ],
+        "description": "Crea varias provincias en una sola operación, a partir de un array. Si alguna no pasa la validación, se corta y se devuelve ese error.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "Array de provincias a crear",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "length": {
-                  "example": "any"
-                }
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProvinceInput"
               }
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Provincias creadas",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Province"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Se esperaba un array no vacío, o alguna provincia no pasó la validación"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/admin/reset/": {
       "post": {
-        "description": "",
+        "tags": [
+          "Admin"
+        ],
+        "description": "Resetea los datos de la tabla de provincias a su estado inicial (uso administrativo).",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Datos reseteados correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Province"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Error en la request"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Province": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Buenos Aires"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Provincia de Buenos Aires"
+        },
+        "latitude": {
+          "type": "number",
+          "example": -34.6
+        },
+        "longitude": {
+          "type": "number",
+          "example": -58.4
+        },
+        "display_order": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "ProvinceInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Buenos Aires"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Provincia de Buenos Aires"
+        },
+        "latitude": {
+          "type": "number",
+          "example": -34.6
+        },
+        "longitude": {
+          "type": "number",
+          "example": -58.4
+        },
+        "display_order": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "ProvincePartial": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Buenos Aires"
         }
       }
     }

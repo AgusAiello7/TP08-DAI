@@ -6,6 +6,15 @@ const router = Router()
 const svc = new ProvinceService()
 
 router.post("/reset/" , async (req, res) => {
+    /*
+        #swagger.tags = ['Admin']
+        #swagger.description = 'Resetea los datos de la tabla de provincias a su estado inicial (uso administrativo).'
+        #swagger.responses[201] = {
+            description: 'Datos reseteados correctamente',
+            schema: [ { $ref: '#/definitions/Province' } ]
+        }
+        #swagger.responses[400] = { description: 'Error en la request' }
+    */
     try{
         const respuesta = await svc.resetAsync()
         if(respuesta){
