@@ -14,6 +14,7 @@ router.post("/reset/" , async (req, res) => {
             schema: [ { $ref: '#/definitions/Province' } ]
         }
         #swagger.responses[400] = { description: 'Error en la request' }
+        #swagger.responses[500] = { description: 'Error interno del servidor' }
     */
     try{
         const respuesta = await svc.resetAsync()
@@ -24,8 +25,8 @@ router.post("/reset/" , async (req, res) => {
         }
     }
     catch (error) {
-        res.status(error.response.status).send("Error interno")
         LogHelper.logError(error)
+        res.status(500).send("Error interno del servidor")
     }
 })
 

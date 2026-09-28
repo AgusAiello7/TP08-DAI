@@ -78,8 +78,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// NUEVO: POST bulk - crea varias provincias a la vez.
-// Ajustá el nombre del método del service (createBulkAsync) según cómo lo implementes ahí.
+// POST bulk: crea varias provincias a la vez
 router.post('/bulk', async (req, res) => {
     /*
         #swagger.tags = ['Provinces']
@@ -156,8 +155,7 @@ router.put('/', async (req, res) => {
     }
 });
 
-// NUEVO: PATCH /:id - actualización parcial.
-// Ajustá el nombre del método del service (updatePartialAsync) según cómo lo implementes ahí.
+// PATCH /:id: actualización parcial
 router.patch('/:id', async (req, res) => {
     /*
         #swagger.tags = ['Provinces']

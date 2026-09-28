@@ -272,6 +272,9 @@
           },
           "400": {
             "description": "Error en la request"
+          },
+          "500": {
+            "description": "Error interno del servidor"
           }
         }
       }

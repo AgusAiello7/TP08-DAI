@@ -21,7 +21,7 @@ export default class ProvinceService {
         return returnArray;
     }
 
-    // NUEVO: crea varias provincias en secuencia, reutilizando createAsync (valida cada una).
+    // crea varias provincias en secuencia, reutilizando createAsync (valida cada una).
     // Si alguna falla la validación (400), se corta y se propaga ese error tal cual.
     createBulkAsync = async (provincias) => {
         const resultados = [];
@@ -39,7 +39,7 @@ export default class ProvinceService {
         return returnArray;
     }
 
-    // NUEVO: actualización parcial. Trae la provincia existente, la mezcla con los
+    // actualización parcial. Trae la provincia existente, la mezcla con los
     // campos recibidos en el body, valida el resultado y lo guarda con updateAsync.
     updatePartialAsync = async (id, cambiosParciales) => {
         const repo = new ProvinceRepository();
